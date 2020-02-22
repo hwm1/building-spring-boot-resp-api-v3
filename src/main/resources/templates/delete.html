@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Form Submission</title>
+        <style>
+            button{
+                margin-top:20px;
+                width: 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Delete Entry</h2>
+        <form id="this_form" onsubmit="actionFunction()" method="POST" autocomplete="off">  
+            <fieldset>
+                <p>Delete ID: <input type="text" name="effthymeleaf" required /></p>
+                <p><input type="submit" value="Submit" /> 
+            </fieldset>       
+        </form>
+        <button onclick="window.location.href = '/'">Menu</button>
+        <script>
+            function actionFunction() {
+                var action_src = "blog/" + document.getElementsByName("effthymeleaf")[0].value;
+                var this_form = document.getElementById("this_form");
+                this_form.action = action_src;
+            }
+        </script>
+    </body>
+</html>
+
+
+
+
+<!--<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Form Submission</title>
+        <style>
+            button{
+                margin-top:20px;
+                width: 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Delete Entry</h2>
+        <form action=      method="POST" >  
+            <fieldset>
+                <p>Delete ID: <input type="text" th:field="*{id}" th:object="${blog}" required /></p>
+                <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+            </fieldset>
+        </form>
+        <button onclick="window.location.href = '/'">Menu</button>
+    </body>
+</html>-->
+

@@ -1,57 +1,111 @@
 package me.salisuwy;
 
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@RestController
+//@RestController
+@Controller
 public class BlogController {
 
     @Autowired
-    BlogRespository blogRespository;
+    BlogRepository blogRepository;
+
+    @GetMapping("/create")
+    public String inputForm(Model model) {
+        model.addAttribute("blog", new Blog());
+        return "inputform";
+    }
+
+    @GetMapping("/delete")
+    public String deleteForm(Model model) {
+        model.addAttribute("blog", new Blog());
+        return "delete";
+    }
+
+    @GetMapping("/")
+    public String menu() {
+        return "index";
+    }
 
     @GetMapping("/blog")
-    public List<Blog> index(){
-        return blogRespository.findAll();
+    public ModelAndView index() {
+        List<Blog> blog = blogRepository.findAll();
+        Map<String, Object> params = new HashMap<>();
+        params.put("blog", blog);
+        return new ModelAndView("displayall", params);
     }
 
     @GetMapping("/blog/{id}")
-    public Blog show(@PathVariable String id){
+    public ModelAndView index2(@PathVariable String id) {
         int blogId = Integer.parseInt(id);
-        return blogRespository.findOne(blogId);
+        Blog blog = blogRepository.findById(blogId).orElse(null);
+        Map<String, Object> params = new HashMap<>();
+        params.put("blog", blog);
+        return new ModelAndView("displayall", params);
     }
 
     @PostMapping("/blog/search")
-    public List<Blog> search(@RequestBody Map<String, String> body){
+    public List<Blog> search(@RequestBody Map<String, String> body) {
         String searchTerm = body.get("text");
-        return blogRespository.findByTitleContainingOrContentContaining(searchTerm, searchTerm);
+        return blogRepository.findByTitleContainingOrContentContaining(searchTerm, searchTerm);
     }
 
     @PostMapping("/blog")
-    public Blog create(@RequestBody Map<String, String> body){
-        String title = body.get("title");
-        String content = body.get("content");
-        return blogRespository.save(new Blog(title, content));
+    public String addNewBlog(@RequestParam String title, @RequestParam String content) {
+        blogRepository.save(new Blog(title, content));
+        //stay on the form page
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("redirect:/create");
+//        return modelAndView;
+        return "added";
     }
 
     @PutMapping("/blog/{id}")
-    public Blog update(@PathVariable String id, @RequestBody Map<String, String> body){
+    public Blog update(@PathVariable String id, @RequestBody Map<String, String> body) {
         int blogId = Integer.parseInt(id);
         // getting blog
-        Blog blog = blogRespository.findOne(blogId);
+        //  Blog blog = blogRepository.findOne(blogId);
+        Blog blog = blogRepository.findById(blogId).orElse(null);
         blog.setTitle(body.get("title"));
         blog.setContent(body.get("content"));
-        return blogRespository.save(blog);
+        return blogRepository.save(blog);
     }
 
-    @DeleteMapping("blog/{id}")
-    public boolean delete(@PathVariable String id){
+//    @PostMapping("blog/{id}")
+//    public boolean delete(@PathVariable String id) {
+//        int blogId = Integer.parseInt(id);
+//        //  blogRepository.delete(blogId);
+//        Blog blog = blogRepository.findById(blogId).orElse(null);
+//        blogRepository.delete(blog);
+//        return true;
+//    }
+    @PostMapping("blog/{id}")
+    public String delete(@PathVariable String id) {
         int blogId = Integer.parseInt(id);
-        blogRespository.delete(blogId);
-        return true;
-    }
+        //  blogRepository.delete(blogId);
+        Blog blog = blogRepository.findById(blogId).orElse(null);
+        if (blog != null) {
+            blogRepository.delete(blog);
+        }
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("redirect:/delete");
+//        return modelAndView;
 
+        return "deleted";
+
+    }
 
 }
+
+

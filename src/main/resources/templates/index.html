@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Menu</title>
+        <style>
+            .center{
+                text-align:center;         
+            }
+            .center div{
+                display:inline-block;
+            }
+            button{
+                margin-top:20px;
+                width: 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="center">
+            <div><button onclick="window.location.href = '/blog'">View Entries</button></div><br/>
+            <div><button onclick="window.location.href = '/create'">Add New Entry</button></div><br/>
+            <div><button onclick="window.location.href = '/delete'">Delete Entry</button></div>
+        </div>
+    </body>
+</html>    
+

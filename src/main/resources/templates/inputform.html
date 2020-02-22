@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Form Submission</title>
+        <style>
+            button{
+                margin-top:20px;
+                width: 250px;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Create Entry</h2>
+        <form id="this_form" action="#" th:action="@{/blog}" th:object="${blog}" method="post" autocomplete="off" >
+            <fieldset>
+                <p>Title: <input type="text" th:field="*{title}" required /></p>
+                <p>Content: <input type="text" th:field="*{content}" required /></p>
+                <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+            </fieldset>
+        </form>
+        <button onclick="window.location.href = '/'">Menu</button>
+    </body>
+</html>
+
+
