@@ -95,17 +95,18 @@ public class BlogController {
         int blogId = Integer.parseInt(id);
         //  blogRepository.delete(blogId);
         Blog blog = blogRepository.findById(blogId).orElse(null);
-        if (blog != null) {
-            blogRepository.delete(blog);
+
+        if (blog == null) {
+            return "";
         }
+
+        blogRepository.delete(blog);
+
 //        ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.setViewName("redirect:/delete");
 //        return modelAndView;
-
         return "deleted";
 
     }
 
 }
-
-
